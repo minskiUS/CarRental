@@ -3,3 +3,5 @@ spring:
     name: carrental
   profiles:
     active: local # for demo purpose
+  liquibase:
+    enabled: true
