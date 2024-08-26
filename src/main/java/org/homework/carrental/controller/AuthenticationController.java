@@ -1,5 +1,6 @@
 package org.homework.carrental.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.homework.carrental.dto.LoginResponse;
 import org.homework.carrental.dto.LoginUserDto;
@@ -22,7 +23,7 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
         User registeredUser = authenticationService.signup(registerUserDto);
 
         return ResponseEntity.ok(registeredUser);

@@ -1,5 +1,6 @@
 package org.homework.carrental.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,12 +22,15 @@ import java.util.UUID;
 public class User implements Serializable, UserDetails {
 
     @Id
+    @JsonIgnore
     private UUID id;
     private String firstName;
     private String lastName;
     private String email;
+    @JsonIgnore
     private String password;
     private short age;
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
