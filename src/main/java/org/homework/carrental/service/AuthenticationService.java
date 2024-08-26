@@ -1,7 +1,9 @@
 package org.homework.carrental.service;
 
+import lombok.AllArgsConstructor;
 import org.homework.carrental.dto.LoginUserDto;
 import org.homework.carrental.dto.RegisterUserDto;
+import org.homework.carrental.exception.NotFoundException;
 import org.homework.carrental.model.Role;
 import org.homework.carrental.model.User;
 import org.homework.carrental.repository.RoleRepository;
@@ -15,37 +17,26 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class AuthenticationService {
+
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
-
     private final AuthenticationManager authenticationManager;
     private final RoleRepository roleRepository;
-
-    public AuthenticationService(
-            UserRepository userRepository,
-            AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder, RoleRepository roleRepository
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleRepository = roleRepository;
-    }
 
     public User signup(RegisterUserDto input) {
         User user = new User();
         user.setEmail(input.getEmail());
-        user.setFirstName("John");
-        user.setLastName("Doe");
-        user.setAge((short) 11);
+        user.setFirstName(input.getFirstName());
+        user.setLastName(input.getLastName());
+        user.setAge(input.getAge());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setId(UUID.randomUUID());
 
         Role roleUser = roleRepository.findAll().stream()
-                .filter(role -> role.getName().equals("USER"))
-                .findFirst().get();
+                .filter(role -> "USER".equals(role.getName()))
+                .findFirst().orElseThrow(() -> new NotFoundException("Role not found"));
         user.setRoles(Set.of(roleUser));
 
 

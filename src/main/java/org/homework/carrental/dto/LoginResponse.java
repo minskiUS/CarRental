@@ -1,16 +1,16 @@
 package org.homework.carrental.dto;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
 public class LoginResponse {
+
     private String token;
-
     private long expiresIn;
-
-    public String getToken() {
-        return token;
-    }
-
-    // Getters and setters...
 }
