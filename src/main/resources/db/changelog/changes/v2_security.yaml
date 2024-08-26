@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: Artem Antsitovich
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_roles
+            baseColumnNames: user_id
+            constraintName: fk_users_roles_user
+            referencedTableName: user
+            referencedColumnNames: id
+            referencedTableSchemaName: carrent
+
+  - changeSet:
+      id: 6
+      author: Artem Antsitovich
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_roles
+            baseColumnNames: role_id
+            constraintName: fk_users_roles_role
+            referencedTableName: roles
+            referencedColumnNames: id
+  - changeSet:
+      id: 7
+      author: Artem Antsitovich
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: name
+                  value: USER
+              - column:
+                  name: name
+                  value: ADMIN
