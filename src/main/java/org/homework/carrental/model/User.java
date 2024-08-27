@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
+@Setter
 @Entity
 @Builder
 @EqualsAndHashCode
@@ -58,7 +59,7 @@ public class User implements Serializable, UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .toList();
     }
 
