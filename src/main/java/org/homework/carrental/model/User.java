@@ -1,6 +1,5 @@
 package org.homework.carrental.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,48 +13,46 @@ import java.util.UUID;
 
 @Getter
 @Entity
+@Builder
 @EqualsAndHashCode
-@AllArgsConstructor
-@Setter
-@Table(name = "user", schema = "carrent")
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user", schema = "carrent")
 public class User implements Serializable, UserDetails {
 
     @Id
-    @JsonIgnore
     private UUID id;
     private String firstName;
     private String lastName;
     private String email;
-    @JsonIgnore
     private String password;
     private short age;
-    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Set<Role> roles;
+    private boolean enabled;
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return enabled;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

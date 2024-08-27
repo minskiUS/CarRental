@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.homework.carrental.dto.LoginResponse;
 import org.homework.carrental.dto.LoginUserDto;
 import org.homework.carrental.dto.RegisterUserDto;
+import org.homework.carrental.dto.UserDto;
 import org.homework.carrental.model.User;
 import org.homework.carrental.service.AuthenticationService;
 import org.homework.carrental.service.JwtService;
@@ -23,10 +24,10 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterUserDto registerUserDto) {
+        UserDto userDto = authenticationService.signup(registerUserDto);
 
-        return ResponseEntity.ok(registeredUser);
+        return ResponseEntity.ok(userDto);
     }
 
     @PostMapping("/login")
