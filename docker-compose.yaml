@@ -1,7 +1,6 @@
 version: '3.8'
 
 services:
-  # PostgreSQL Service
   postgres:
     image: postgres:15
     container_name: my_postgres
@@ -14,6 +13,33 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init-db:/docker-entrypoint-initdb.d/
+    networks:
+      - carrent_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  springboot-app:
+    image: carrent
+    container_name: carrent
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: carrent
+      DB_USERNAME: myuser
+      DB_PASSWORD: mypassword
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - carrent_network
 
 volumes:
   postgres_data:
+
+networks:
+  carrent_network:
