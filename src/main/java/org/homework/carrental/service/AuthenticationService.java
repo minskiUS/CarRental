@@ -8,7 +8,6 @@ import org.homework.carrental.exception.NotFoundException;
 import org.homework.carrental.mapper.UserMapper;
 import org.homework.carrental.model.Role;
 import org.homework.carrental.model.User;
-import org.homework.carrental.repository.RoleRepository;
 import org.homework.carrental.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,14 +25,12 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final RoleRepository roleRepository;
+    private final RoleService roleService;
     private final UserMapper userMapper;
 
     @Transactional
     public UserDto signup(RegisterUserDto input) {
-        Role roleUser = roleRepository.findAll().stream()
-                .filter(role -> "USER".equals(role.getName()))
-                .findFirst().orElseThrow(() -> new NotFoundException("Role not found"));
+        Role userRole = roleService.getUserRole();
         User user = User.builder()
                 .email(input.getEmail())
                 .password(passwordEncoder.encode(input.getPassword()))
@@ -41,7 +38,8 @@ public class AuthenticationService {
                 .lastName(input.getLastName())
                 .age(input.getAge())
                 .id(UUID.randomUUID())
-                .roles(Set.of(roleUser))
+                .roles(Set.of(userRole))
+                .enabled(true)
                 .build();
         User save = userRepository.save(user);
         return userMapper.toUserDto(save);
@@ -56,6 +54,6 @@ public class AuthenticationService {
         );
 
         return userRepository.findByEmail(input.getEmail())
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException("User not found"));
     }
 }
