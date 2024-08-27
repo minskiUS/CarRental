@@ -5,6 +5,7 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: car
+            schemaName: carrent
             columns:
               - column:
                   name: id

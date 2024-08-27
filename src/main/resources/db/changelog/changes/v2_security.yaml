@@ -5,6 +5,7 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: roles
+            schemaName: carrent
             columns:
               - column:
                   name: id
@@ -24,6 +25,7 @@ databaseChangeLog:
       changes:
         - createTable:
             tableName: users_roles
+            schemaName: carrent
             columns:
               - column:
                   name: user_id

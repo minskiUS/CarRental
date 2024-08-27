@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 13
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: booking
+            schemaName: carrent
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: car_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: DECIMAL(10, 2)
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            constraintName: fk_booking_car
+            baseTableName: booking
+            baseColumnNames: car_id
+            referencedTableName: car
+            referencedColumnNames: id
+
+        - addForeignKeyConstraint:
+            constraintName: fk_booking_user
+            baseTableName: booking
+            baseColumnNames: user_id
+            referencedTableName: user
+            referencedColumnNames: id
