@@ -1,0 +1,137 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 5
+      author: Artem Antsitovich
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_roles
+            baseColumnNames: user_id
+            constraintName: fk_users_roles_user
+            referencedTableName: user
+            referencedColumnNames: id
+            referencedTableSchemaName: carrent
+
+  - changeSet:
+      id: 6
+      author: Artem Antsitovich
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_roles
+            baseColumnNames: role_id
+            constraintName: fk_users_roles_role
+            referencedTableName: roles
+            referencedColumnNames: id
+  - changeSet:
+      id: 7
+      author: Artem Antsitovich
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: ADMIN
+  - changeSet:
+      id: 8
+      author: Artem Antsitovich
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: USER
+  - changeSet:
+      id: 9
+      author: Artem Antsitovich
+      changes:
+        - addColumn:
+            tableName: user
+            columns:
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValue: "true"
+  - changeSet:
+      id: 10
+      author: Artem Antsitovich
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: id
+                  value: 00000000-0000-0000-0000-000000000001 # UUID for the admin user
+              - column:
+                  name: first_name
+                  value: Admin
+              - column:
+                  name: last_name
+                  value: Admin
+              - column:
+                  name: email
+                  value: admin@carrent.com
+              - column:
+                  name: password
+                  value: $2a$10$iTrmGcoz6aziC9ARUVLD0OZWO4fteAij9G2AMQNiGFi8SERa6CiLy # MyPassword1!
+              - column:
+                  name: age
+                  value: 30
+              - column:
+                  name: enabled
+                  valueBoolean: true
+  - changeSet:
+      id: 11
+      author: Artem Antsitovich
+      changes:
+        - insert:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  value: 00000000-0000-0000-0000-000000000001
+              - column:
+                  name: role_id
+                  value: 2

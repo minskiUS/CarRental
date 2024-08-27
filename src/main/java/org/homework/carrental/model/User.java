@@ -1,20 +1,24 @@
 package org.homework.carrental.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
-@Data
 @Getter
 @Entity
+@Builder
 @EqualsAndHashCode
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user", schema = "carrent")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User implements Serializable, UserDetails {
 
     @Id
     private UUID id;
@@ -23,4 +27,43 @@ public class User {
     private String email;
     private String password;
     private short age;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles;
+    private boolean enabled;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .toList();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }
