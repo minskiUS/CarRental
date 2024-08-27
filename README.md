@@ -25,3 +25,4 @@ Swagger
 - [ ] microservices (banking service, insurance service, notification service)
 - [ ] event driven approach
 - [ ] k8s
+- [ ] aws (sns, sqs, ec2)
