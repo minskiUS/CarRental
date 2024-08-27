@@ -22,6 +22,6 @@ Swagger
 - [x] entities modification (add/update/delete)
 - [x] basic validation
 - [x] booking management
-- [ ] microservices (banking service, insurance service, notification serivce)
+- [ ] microservices (banking service, insurance service, notification service)
 - [ ] event driven approach
 - [ ] k8s
