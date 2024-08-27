@@ -14,8 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +39,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).promote(any(UUID.class), any(String.class));
+        verify(userService).promote(userId, role);
     }
 
     @Test
@@ -54,7 +52,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).demote(any(UUID.class), any(String.class));
+        verify(userService).demote(userId, role);
     }
 
     @Test
@@ -66,7 +64,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).lock(any(UUID.class));
+        verify(userService).lock(userId);
     }
 
     @Test
@@ -78,7 +76,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        verify(userService, times(1)).unlock(any(UUID.class));
+        verify(userService).unlock(userId);
     }
 
     @Test

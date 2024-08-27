@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,7 +59,7 @@ class AuthenticationControllerTest {
                 .andExpect(jsonPath("$.token").value("mocked-jwt-token"))
                 .andExpect(jsonPath("$.expiresIn").value(3600L));
 
-        verify(authenticationService).authenticate(any(LoginUserDto.class));
+        verify(authenticationService).authenticate(loginUserDto);
         verify(jwtService).generateToken(authenticatedUser);
     }
 
@@ -81,7 +80,7 @@ class AuthenticationControllerTest {
                 (short) 30
         );
 
-        when(authenticationService.signup(any(RegisterUserDto.class)))
+        when(authenticationService.signup(registerUserDto))
                 .thenReturn(userDto);
 
         String requestBody = new ObjectMapper().writeValueAsString(registerUserDto);
@@ -95,7 +94,7 @@ class AuthenticationControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Doe"))
                 .andExpect(jsonPath("$.age").value(30));
 
-        verify(authenticationService).signup(any(RegisterUserDto.class));
+        verify(authenticationService).signup(registerUserDto);
     }
 
 }

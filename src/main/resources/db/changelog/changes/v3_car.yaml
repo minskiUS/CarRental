@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 12
+      author: Artem Antsitovich
+      changes:
+        - createTable:
+            tableName: car
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: model
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: make
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: year
+                  type: varchar(4)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: mileage
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_available
+                  type: boolean
+                  constraints:
+                    nullable: false
